@@ -1,0 +1,48 @@
+CarMind Sprint 1 login verification
+Date: 3 October 2026
+
+Environment
+- Native Android application, com.carmind.app.
+- Android API 28 x86_64 device emulator.
+- Official Firebase Auth emulator on localhost, demo-carmind project.
+- No real Firebase project, account, or cloud deployment.
+
+Build and static checks
+- testDebugUnitTest: PASS, 6 tests, 0 failures, 0 errors.
+- assembleDebug -PauthEmulator=true: PASS.
+- lintDebug: PASS, 0 errors and 5 warnings. These concern legacy backup
+  attributes, possible background overdraw, and two unused hint strings.
+- assembleRelease and lintRelease: PASS.
+- Release AUTH_EMULATOR is false even when -PauthEmulator=true is supplied.
+- Release manifest prohibits cleartext HTTP and contains no debug network
+  security configuration.
+
+Device cases
+LOGIN-01 PASS: blank form requests an email.
+LOGIN-02 PASS: malformed email is rejected.
+LOGIN-03 PASS: blank password is rejected.
+LOGIN-04 PASS: password starts masked.
+LOGIN-05 PASS: wrong password displays a generic credentials error.
+LOGIN-06 PASS: valid local credentials open Home and show the account email.
+LOGIN-07 PASS: app restart restores the Firebase session.
+LOGIN-08 PASS: sign-out and Back/restart do not reopen Home.
+LOGIN-09 PASS: password with surrounding spaces succeeds unchanged.
+
+Pending manual or team checks
+LOGIN-10 NOT RUN: rapid repeated submission during a pending request.
+LOGIN-11 NOT RUN: network loss during a real cloud login.
+LOGIN-12 NOT RUN: disabled-account error against the real provider.
+LOGIN-13 NOT RUN: provider throttling.
+LOGIN-14 NOT RUN: rotation/background while a request is pending.
+LOGIN-15 NOT RUN: registration-to-login integration with teammate's feature.
+
+Evidence and repeatability
+- docs/device-check-results.json records the 9 completed device checks.
+- docs/screenshots/ contains genuine login, failure and home screenshots.
+- scripts/check_login.py repeats the local device checks and seeds only local
+  disposable demo accounts. It clears app data on the specified emulator.
+- app/src/test/java/com/carmind/app/LoginValidationTest.java contains the
+  six JVM input-validation checks.
+
+These results establish local login behavior. They do not establish completed
+registration, cloud verification, vehicle monitoring, or actual sprint meetings.
