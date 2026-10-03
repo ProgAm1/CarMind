@@ -60,6 +60,8 @@ Check for a null instance before submitting. Use `createUserWithEmailAndPassword
 
 See [the Sprint 1 handoff](docs/SPRINT1.md) for the story, test cases, meeting templates and demo sequence. The presentation focuses on Abdullah's login contribution and reserves a slide for the teammate's registration evidence. Registration is not implemented in this branch.
 
+The current deck is [CarMind Sprint 1](docs/CarMind_Sprint1_Deck.pptx). It uses the CarMind graphite/teal palette, genuine Android screenshots, editable text and presenter notes. Slide 9 reserves space for registration. The [identity and artwork notes](docs/presentation-assets/IDENTITY.txt) record the palette, font and cover source. The earlier deck remains in `docs/archive/` for reference.
+
 ## References
 
 - [CCSW 431 course examples and project brief](https://ccsw431.malahmadi.sa/)
