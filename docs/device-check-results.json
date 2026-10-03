@@ -1,0 +1,16 @@
+{
+  "device": "emulator-5556",
+  "api_level": "28",
+  "backend": "local Firebase Auth emulator, demo-carmind",
+  "passed": [
+    "LOGIN-01 blank form",
+    "LOGIN-02 malformed email",
+    "LOGIN-03 empty password",
+    "LOGIN-04 masked password",
+    "LOGIN-05 wrong password",
+    "LOGIN-06 valid local credentials",
+    "LOGIN-07 restored session after app restart",
+    "LOGIN-08 sign-out and navigation guard",
+    "LOGIN-09 exact password with surrounding spaces"
+  ]
+}

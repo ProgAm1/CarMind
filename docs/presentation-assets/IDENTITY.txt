@@ -1,0 +1,47 @@
+CarMind Sprint 1 presentation identity
+
+Palette
+Asphalt #0B1E2B: dark slide backgrounds and main text on light slides.
+Petrol #116D67: brand emphasis and the session slide.
+Ice #F5F8FA: light backgrounds and text on dark slides.
+Mist #A9BBB8: secondary text on dark slides.
+Mint #90D8C7: highlights on dark slides.
+Navy #173A53 and slate #526779 connect the presentation to the app.
+
+Typography
+Century Gothic regular and bold. Keep slide titles at 50-58 px, body text
+at 25-35 px and evidence captions at 23-25 px on the 1280x720 canvas.
+Use spare flat compositions and real app screenshots. The deck's text
+remains editable. Native screenshot crops preserve the original embedded
+PNG bytes, so the crops can be adjusted in PowerPoint or Canva.
+
+App evidence
+docs/screenshots/ contains actual captures of the working emulator-mode APK
+on Android API 28 with the local Firebase Auth emulator. The example.com
+account is disposable test data. No screenshot is an AI-generated app mockup.
+The deck contains no passwords, API keys or cloud credentials.
+
+Cover artwork
+File: carmind-cover.png
+Source: AI-generated automotive illustration, 3 October 2026.
+An automotive illustration, not evidence of a real vehicle or app feature.
+
+Final generation prompt
+Use case: stylized-concept. Asset type: 16:9 presentation cover background
+for CarMind, a university mobile vehicle-care application. Create a
+sophisticated editorial automotive studio illustration, wide landscape.
+A close rear three-quarter silhouette of a modern unbranded sedan positioned
+in the far right third, graphite bodywork, restrained petrol teal highlights
+and subtle cool mint rim light, rich nearly black blue (#0B1E2B) studio
+environment. Sleek precise realistic rendering, calm premium mood, meaningful
+automotive subject, no ornamental abstract shapes. Left 60 percent is smooth
+very dark negative space, top left and bottom left fully clear for editable
+presentation title added later. Main car detail stays on far right so text
+can occupy left without overlap. No text, logos, license plates, phone,
+screens, charts, UI, dashboard, circuit patterns, icons, or neon cyberpunk
+effects. Landscape 16:9 with usable dark negative space.
+
+Teammate handoff
+Replace the registration text on slide 9 with the actual presenter name,
+registration screenshot and test outcome. Verify a newly created account
+can sign in through this login feature. Keep pending work honest.

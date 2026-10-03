@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">CarMind</string>
+    <string name="login_title">Welcome back</string>
+    <string name="login_subtitle">Sign in to your CarMind account.</string>
+    <string name="email_label">Email address</string>
+    <string name="email_hint">name@example.com</string>
+    <string name="password_label">Password</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="show_password">Show password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="register">Create an account</string>
+    <string name="email_required">Please enter your email address.</string>
+    <string name="email_invalid">Please enter a valid email address.</string>
+    <string name="password_required">Please enter your password.</string>
+    <string name="invalid_credentials">Email or password is incorrect.</string>
+    <string name="network_error">Check your connection and try again.</string>
+    <string name="too_many_requests">Too many attempts. Please try again later.</string>
+    <string name="account_disabled">This account is disabled. Contact support.</string>
+    <string name="sign_in_failed">Unable to sign in. Please try again.</string>
+    <string name="auth_unavailable">Sign-in is temporarily unavailable. Please try again later.</string>
+    <string name="home_title">Welcome to CarMind</string>
+    <string name="home_subtitle">Your account is ready.</string>
+    <string name="signed_in_as">Signed in as</string>
+    <string name="sign_out">Sign out</string>
+</resources>
