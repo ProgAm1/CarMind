@@ -23,7 +23,7 @@ The deck contains no passwords, API keys or cloud credentials.
 
 Cover artwork
 File: carmind-cover.png
-Source: OpenAI built-in image generation, 3 October 2026.
+Source: AI-generated automotive illustration, 3 October 2026.
 An automotive illustration, not evidence of a real vehicle or app feature.
 
 Final generation prompt
