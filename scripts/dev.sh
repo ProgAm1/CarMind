@@ -37,9 +37,7 @@ if [[ "$ready" != true ]]; then
     exit 1
 fi
 
-ANDROID_SERIAL="$device" ./gradlew installDebug -PauthEmulator=false --console=plain
+ANDROID_SERIAL="$device" ./gradlew installDebug --console=plain --quiet
 "$adb" -s "$device" shell am force-stop com.carmind.app
-"$adb" -s "$device" shell am start -W -n com.carmind.app/.LoginActivity
-app_pid="$("$adb" -s "$device" shell pidof com.carmind.app | tr -d '\r')"
-echo "CarMind is running. Streaming logs; press Ctrl+C to stop logging."
-exec "$adb" -s "$device" logcat --pid="$app_pid" -v time
+"$adb" -s "$device" shell am start -W -n com.carmind.app/.LoginActivity >/dev/null
+echo "CarMind is running."

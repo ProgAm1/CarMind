@@ -14,15 +14,6 @@ android {
         versionCode = 1
         versionName = '0.1'
     }
-    buildFeatures { buildConfig = true }
-    buildTypes {
-        debug {
-            buildConfigField 'boolean', 'AUTH_EMULATOR', providers.gradleProperty('authEmulator').getOrElse('false')
-        }
-        release {
-            buildConfigField 'boolean', 'AUTH_EMULATOR', 'false'
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

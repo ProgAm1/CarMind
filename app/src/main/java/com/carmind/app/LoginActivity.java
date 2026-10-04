@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -20,7 +18,6 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends Activity {
     private CarMindApplication application;
@@ -102,44 +99,8 @@ public class LoginActivity extends Activity {
                 showError(R.string.password_required); password.requestFocus(); return;
             case NONE: break;
         }
-        long startedAt = SystemClock.elapsedRealtime();
         application.pendingSignIn = auth.signInWithEmailAndPassword(emailValue, passwordValue);
-        logSignIn(application.pendingSignIn, startedAt);
         observeSignIn();
-    }
-
-    private void logSignIn(Task<AuthResult> task, long startedAt) {
-        if (!BuildConfig.DEBUG) return;
-        String requestId = Integer.toHexString(System.identityHashCode(task));
-        Log.d("CarMindAuth", "SDK REQUEST id=" + requestId
-                + "\noperation=FirebaseAuth.signInWithEmailAndPassword"
-                + "\nproject=" + auth.getApp().getOptions().getProjectId()
-                + "\nenvironment=" + (BuildConfig.AUTH_EMULATOR ? "local emulator" : "cloud")
-                + "\nemail=[REDACTED]\npassword=[REDACTED]");
-        // Attach once to the task, independently of activity recreation. Never capture credentials.
-        task.addOnCompleteListener(completed -> {
-            String result = "SDK RESULT id=" + requestId
-                    + "\nduration_ms=" + (SystemClock.elapsedRealtime() - startedAt)
-                    + "\nsuccess=" + completed.isSuccessful();
-            if (completed.isSuccessful()) {
-                FirebaseUser user = completed.getResult().getUser();
-                result += "\nuser_present=" + (user != null);
-                if (user != null) {
-                    result += "\nemail_verified=" + user.isEmailVerified()
-                            + "\nanonymous=" + user.isAnonymous();
-                }
-                result += "\nuser_identifiers=[REDACTED]\ntokens=[REDACTED]";
-            } else {
-                Exception failure = completed.getException();
-                String code = failure instanceof FirebaseAuthException
-                        ? ((FirebaseAuthException) failure).getErrorCode()
-                        : failure instanceof FirebaseNetworkException ? "NETWORK_ERROR"
-                        : failure instanceof FirebaseTooManyRequestsException ? "TOO_MANY_REQUESTS"
-                        : "SIGN_IN_FAILED";
-                result += "\nerror_code=" + code;
-            }
-            Log.d("CarMindAuth", result);
-        });
     }
 
     private void observeSignIn() {

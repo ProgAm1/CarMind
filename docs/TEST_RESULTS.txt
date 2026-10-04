@@ -1,3 +1,19 @@
+Current verification: 4 October 2026
+
+- testDebugUnitTest: PASS, 6 tests, 0 failures, 0 errors.
+- assembleDebug and assembleRelease: PASS.
+- lintDebug: PASS; one AndroidGradlePluginVersion advisory remains.
+- bash -n scripts/dev.sh and git diff --check: PASS.
+- scripts/dev.sh: installed and launched CarMind on CarMind_API_36.
+- App uses the local google-services.json for carmind-senior; local Auth
+  emulator configuration, demo seeding, and custom logging were removed.
+- Antigravity Java classpath notices remain a known editor limitation.
+  No diagnostics are suppressed and no full editor semantic check is claimed.
+- Full cloud acceptance cases were not rerun in this verification.
+
+The report below is historical evidence from the retired local Auth emulator
+mode. Its old commands and script paths no longer describe the current app.
+
 CarMind Sprint 1 login verification
 Date: 3 October 2026
 

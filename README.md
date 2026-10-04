@@ -1,5 +1,10 @@
 # CarMind
 
+Connected Car / IoT / Automotive Software graduation project.
+
+- [Project baseline and scope](docs/PROJECT_CONTEXT.md)
+- [Codex instructions](AGENTS.md)
+
 CarMind is the team's vehicle monitoring app for CCSW 431. This first increment implements Abdullah Misar's email/password login story in native Android using Java, XML layouts, and Firebase Authentication. The authenticated home screen is a minimal Sprint 1 landing page. Vehicle monitoring features belong to later increments.
 
 ## Open and build
@@ -12,37 +17,31 @@ Open this repository folder in Android Studio. Use Android SDK 37, Build Tools 3
 
 On Windows, use `gradlew.bat`. Android Studio creates your machine's `local.properties`; do not commit that file.
 
+## Antigravity editor diagnostics
+
+The workspace enables the Java extension's experimental Android import support. The installed extension still reports some Android files as outside its classpath; this notice is not suppressed. Use the Gradle build, unit tests, and Android lint command above to validate the app, or Android Studio for Android project-aware editing. No application code was changed to work around the editor's project model.
+
 ## Connect the team Firebase project
 
 1. Create or select the team's Firebase project.
 2. Register an Android app with package name `com.carmind.app`.
 3. Download its `google-services.json` to `app/google-services.json`.
 4. Enable **Authentication > Sign-in method > Email/Password**.
-5. Create a test user through Firebase Console or the teammate's registration screen, then rebuild and run the app.
+5. Use an existing account in Firebase Console, then rebuild and run the app.
 
-The Gradle build applies the Google Services plugin when the configuration file exists. Without it, the ordinary app builds but disables login and displays an unavailable message. This repository contains no real Firebase project configuration. `google-services.json` is ignored so the team shares that environment configuration deliberately.
+The Gradle build applies the Google Services plugin when the configuration file exists. Without it, the ordinary app builds but disables login and displays an unavailable message. The configuration file is local and is not tracked in Git. `google-services.json` is ignored so the team shares that environment configuration deliberately.
 
 Firebase owns credentials and session tokens. The app does not store passwords in a database or SharedPreferences, print credentials, or display raw Firebase exceptions. Any future backend or database must enforce authorization using verified identity and security rules. The Android home screen check alone does not authorize access to server data.
 
-## Local demonstration without a Firebase project
+## Daily run with the team Firebase project
 
-Install the official [Firebase CLI](https://firebase.google.com/docs/cli), then start the Auth emulator from the repository folder:
-
-```sh
-firebase emulators:start --only auth --project demo-carmind
-```
-
-In a second terminal, build and install the emulator version on an Android Virtual Device:
+The app uses the Firebase project configured in `app/google-services.json`. The team's current project is `carmind-senior`, with Android package `com.carmind.app`. There is no local Auth emulator mode or automatic demo-account creation.
 
 ```sh
-./gradlew assembleDebug -PauthEmulator=true
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-python scripts/check_login.py --adb adb --device emulator-5554
+./scripts/dev.sh
 ```
 
-The check script creates local demo users and exercises the installed app. The app connects to `10.0.2.2:9099`, which addresses the development computer from an Android Virtual Device. Emulator mode uses a separate named Firebase app for the `demo-carmind` project. It never uses a live Firebase account. Release builds always disable emulator mode and prohibit cleartext traffic. Debug HTTP access is limited to loopback and the Android emulator host.
-
-Emulator mode requires an Android Virtual Device, not a physical phone. The local test passwords are disposable demo credentials, not real accounts.
+This starts the Android Virtual Device if needed, builds and installs the app, then exits. Sign in with an existing account from the team's Firebase Authentication console.
 
 ## Registration integration
 
@@ -66,7 +65,6 @@ The current deck is [CarMind Sprint 1](docs/CarMind_Sprint1_Deck.pptx). It uses 
 
 - [CCSW 431 course examples and project brief](https://ccsw431.malahmadi.sa/)
 - [Firebase Android email/password authentication](https://firebase.google.com/docs/auth/android/password-auth)
-- [Firebase Auth emulator](https://firebase.google.com/docs/emulator-suite/connect_auth)
 - [Android Gradle plugin 9.4 compatibility](https://developer.android.com/build/releases/agp-9-4-0-release-notes)
 
 The early senior-project CarMind report supplies the app concept. Its prototype claims are not evidence that these course features have passed tests.

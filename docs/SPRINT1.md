@@ -29,7 +29,7 @@ Abdullah Misar owns the Login and Authentication story. The course's Sprint 1 in
 
 ## Test cases
 
-Run the app against the local Auth emulator for local evidence. Repeat the integration cases against the team's Firebase project before the final class demo. Automated unit checks validate inputs only. Device checks verify the installed APK and SDK integration.
+Run the app against the team's configured Firebase project using authorized accounts. The previous local Auth emulator mode and its account-seeding script have been removed. Automated unit checks validate inputs only. Device checks verify the installed APK and SDK integration.
 
 | ID | Test | Expected result | Evidence |
 | --- | --- | --- | --- |
@@ -38,7 +38,7 @@ Run the app against the local Auth emulator for local evidence. Repeat the integ
 | LOGIN-03 | Submit a valid email and blank password | Password field requests a password | Device check and unit check |
 | LOGIN-04 | Type a password with Show password off | Characters remain masked | Device check |
 | LOGIN-05 | Submit the wrong password | Login stays open and shows a generic credential error | Device check |
-| LOGIN-06 | Submit valid local credentials | Home opens and shows the account email | Device check |
+| LOGIN-06 | Submit valid team Firebase credentials | Home opens and shows the account email | Device check |
 | LOGIN-07 | Stop and restart the app after successful login | Firebase restores the session and Home opens | Device check |
 | LOGIN-08 | Sign out, then press Back and restart | Login opens and Home stays inaccessible | Device check |
 | LOGIN-09 | Login with a password containing leading/trailing spaces | Exact password succeeds without trimming | Device check |
@@ -56,12 +56,12 @@ Record actual outcomes in `docs/TEST_RESULTS.txt`. Do not replace a pending outc
 1. Introduce Story 002 and explain that a registered user needs an authenticated entry point.
 2. Submit the blank form, then a malformed email.
 3. Show masked password input and a wrong-password failure.
-4. Submit a valid local account and show Home.
+4. Submit a valid team Firebase account and show Home.
 5. Restart the app to demonstrate session restoration.
 6. Sign out, press Back, and show that Home is inaccessible.
 7. Let the teammate present Registration and the shared-account integration test when ready.
 
-If the demo uses the local Auth emulator, state that clearly. Do not present mock vehicle measurements or old senior-project screenshots as proof of this sprint's working features.
+Historical local Auth emulator results describe earlier testing, not current cloud verification. Do not present mock vehicle measurements or old senior-project screenshots as proof of this sprint's working features.
 
 ## Meeting records
 
