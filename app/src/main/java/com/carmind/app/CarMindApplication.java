@@ -1,6 +1,7 @@
 package com.carmind.app;
 
 import android.app.Application;
+import android.util.Log;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -29,6 +30,9 @@ public class CarMindApplication extends Application {
         if (app != null) {
             auth = FirebaseAuth.getInstance(app);
             if (BuildConfig.AUTH_EMULATOR) auth.useEmulator("10.0.2.2", 9099);
+            if (BuildConfig.DEBUG) Log.d("CarMindAuth", "Firebase initialized"
+                    + "\nproject=" + app.getOptions().getProjectId()
+                    + "\nenvironment=" + (BuildConfig.AUTH_EMULATOR ? "local emulator" : "cloud"));
         }
     }
 
