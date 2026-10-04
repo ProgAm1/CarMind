@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root" android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:background="#F5F8FA" android:padding="28dp">
+    android:orientation="vertical" android:padding="28dp">
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/app_name" android:textSize="36sp" android:textStyle="bold" android:textColor="#116D67" android:layout_marginBottom="56dp" />
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_title" android:textSize="28sp" android:textStyle="bold" android:textColor="#173A53" />
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_subtitle" android:textSize="16sp" android:textColor="#526779" android:layout_marginTop="8dp" />

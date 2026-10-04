@@ -3,9 +3,7 @@
     <string name="login_title">Welcome back</string>
     <string name="login_subtitle">Sign in to your CarMind account.</string>
     <string name="email_label">Email address</string>
-    <string name="email_hint">name@example.com</string>
     <string name="password_label">Password</string>
-    <string name="password_hint">Enter your password</string>
     <string name="show_password">Show password</string>
     <string name="sign_in">Sign in</string>
     <string name="signing_in">Signing in…</string>
