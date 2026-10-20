@@ -5,7 +5,13 @@ Connected Car / IoT / Automotive Software graduation project.
 - [Project baseline and scope](docs/PROJECT_CONTEXT.md)
 - [Codex instructions](AGENTS.md)
 
-CarMind is the team's vehicle monitoring app for CCSW 431. This first increment implements Abdullah Misar's email/password login story in native Android using Java, XML layouts, and Firebase Authentication. The authenticated home screen is a minimal Sprint 1 landing page. Vehicle monitoring features belong to later increments.
+CarMind is the team's vehicle monitoring app for CCSW 431, built with native Android Java, XML layouts, and Firebase Authentication. Sprint 2 extends the existing login flow with a Bluetooth OBD dashboard and account-scoped local reading history.
+
+See [Sprint 2 implementation and release notes](docs/SPRINT2.md) and [executed test results](docs/SPRINT2_TEST_RESULTS.txt). The code targets Bluetooth Classic SPP readers that accept ELM-compatible commands. The team's photographed reader is confirmed to use Bluetooth, but its exact protocol and vehicle compatibility still require a physical test.
+
+Version 0.2 requests supported engine RPM, vehicle speed and coolant temperature, displays a dated snapshot, and retains the latest 20 readings per account on the phone. It does not control the vehicle. The screenshot test host is debug-only, clearly labelled with simulated data, and absent from the release APK.
+
+Sprint 2 submission documents: [presentation](docs/CarMind_Sprint2_Deck.pptx), [progress and test report](docs/CarMind_Sprint2_Report.docx), and [Arabic presenter notes](docs/SPRINT2_PRESENTER_NOTES_AR.txt). The revised 14-slide deck includes isolated reader photos and editable diagrams explaining power and data flow.
 
 ## Open and build
 

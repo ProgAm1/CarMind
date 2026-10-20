@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root" android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:padding="28dp">
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/app_name" android:textSize="36sp" android:textStyle="bold" android:textColor="#116D67" android:layout_marginBottom="56dp" />
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_title" android:textSize="28sp" android:textStyle="bold" android:textColor="#173A53" />
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_subtitle" android:textSize="16sp" android:textColor="#526779" android:layout_marginTop="8dp" />
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/signed_in_as" android:textSize="15sp" android:textColor="#526779" android:layout_marginTop="40dp" />
-    <TextView android:id="@+id/account_email" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="19sp" android:textColor="#173A53" android:layout_marginTop="8dp" />
-    <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
-    <Button android:id="@+id/sign_out" android:layout_width="match_parent" android:layout_height="56dp" android:background="@drawable/button_background" android:backgroundTint="#173A53" android:text="@string/sign_out" android:textColor="#FFFFFF" android:textSize="17sp" android:textAllCaps="false" />
-</LinearLayout>
+    android:fillViewport="true" android:padding="24dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <TextView style="@style/DashboardHeading" android:text="@string/app_name" android:textColor="@color/teal" android:textSize="30sp" />
+        <TextView style="@style/DashboardText" android:id="@+id/account_email" android:textSize="13sp" android:textColor="@color/muted" android:layout_marginTop="4dp" />
+        <TextView style="@style/DashboardHeading" android:text="@string/dashboard_title" android:textSize="28sp" android:layout_marginTop="24dp" />
+        <TextView style="@style/DashboardText" android:text="@string/dashboard_subtitle" android:textColor="@color/muted" android:layout_marginTop="4dp" android:layout_marginBottom="24dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/surface_card">
+            <TextView style="@style/DashboardHeading" android:text="@string/reader_title" />
+            <TextView style="@style/DashboardText" android:id="@+id/reader_name" android:text="@string/reader_empty" android:textColor="@color/teal" android:layout_marginTop="8dp" />
+            <TextView style="@style/DashboardText" android:text="@string/reader_help" android:textSize="14sp" android:textColor="@color/muted" android:layout_marginTop="8dp" />
+            <Button style="@style/DashboardButton" android:id="@+id/choose_reader" android:text="@string/choose_reader" android:layout_marginTop="16dp" />
+            <Button android:id="@+id/bluetooth_settings" style="?android:attr/borderlessButtonStyle" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/bluetooth_settings" android:textAllCaps="false" android:textColor="@color/teal" android:layout_marginTop="8dp" />
+        </LinearLayout>
+        <TextView style="@style/DashboardText" android:id="@+id/connection_status" android:text="@string/pair_reader_note" android:accessibilityLiveRegion="polite" android:textColor="@color/muted" android:textSize="14sp" android:layout_marginTop="16dp" />
+        <ProgressBar android:id="@+id/reading_progress" android:layout_width="32dp" android:layout_height="32dp" android:layout_gravity="center_horizontal" android:visibility="gone" android:layout_marginTop="12dp" />
+        <Button style="@style/DashboardButton" android:id="@+id/read_vehicle" android:text="@string/read_vehicle" android:enabled="false" android:layout_marginTop="16dp" />
+        <Button android:id="@+id/cancel_reading" style="?android:attr/borderlessButtonStyle" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/cancel_reading" android:textAllCaps="false" android:textColor="@color/teal" android:visibility="gone" />
+        <TextView style="@style/DashboardHeading" android:text="@string/last_reading" android:layout_marginTop="28dp" />
+        <TextView style="@style/DashboardText" android:id="@+id/reading_time" android:text="@string/no_readings" android:textColor="@color/muted" android:textSize="14sp" android:layout_marginTop="8dp" android:layout_marginBottom="16dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/surface_card" android:layout_marginBottom="12dp">
+            <TextView style="@style/DashboardText" android:text="@string/rpm_label" android:textColor="@color/muted" android:textSize="14sp" />
+            <TextView style="@style/DashboardHeading" android:id="@+id/rpm_value" android:text="@string/not_available" android:textSize="28sp" android:layout_marginTop="4dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/surface_card" android:layout_marginBottom="12dp">
+            <TextView style="@style/DashboardText" android:text="@string/speed_label" android:textColor="@color/muted" android:textSize="14sp" />
+            <TextView style="@style/DashboardHeading" android:id="@+id/speed_value" android:text="@string/not_available" android:textSize="28sp" android:layout_marginTop="4dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/surface_card" android:layout_marginBottom="12dp">
+            <TextView style="@style/DashboardText" android:text="@string/coolant_label" android:textColor="@color/muted" android:textSize="14sp" />
+            <TextView style="@style/DashboardHeading" android:id="@+id/coolant_value" android:text="@string/not_available" android:textSize="28sp" android:layout_marginTop="4dp" />
+        </LinearLayout>
+        <TextView style="@style/DashboardText" android:text="@string/not_live" android:textSize="13sp" android:textColor="@color/muted" />
+        <TextView style="@style/DashboardHeading" android:text="@string/history_title" android:layout_marginTop="28dp" />
+        <TextView style="@style/DashboardText" android:text="@string/history_help" android:textSize="14sp" android:textColor="@color/muted" android:layout_marginTop="8dp" />
+        <LinearLayout android:id="@+id/history_list" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="16dp" />
+        <Button android:id="@+id/sign_out" style="?android:attr/borderlessButtonStyle" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/sign_out" android:textAllCaps="false" android:textColor="@color/ink" android:layout_marginTop="24dp" />
+    </LinearLayout>
+</ScrollView>

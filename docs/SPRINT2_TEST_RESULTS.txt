@@ -1,0 +1,84 @@
+CarMind Sprint 2 verification — 20 October 2026
+Version 0.2; source based on main commit 83b5954 plus local Sprint 2 changes.
+
+RESULTS
+-------
+Unit tests: 28 passed, 0 failed, 0 skipped.
+  LoginValidationTest: 6 (existing Sprint 1 input validation)
+  ObdProtocolTest: 16
+  VehicleReadingTest: 6
+
+Android instrumentation: 6 passed, 0 failed.
+  Sprint2DeviceTest on an Android API 36 emulator.
+  Final direct runner output: Time: 8.481 / OK (6 tests).
+  Covers account-separated history persistence, newest-20 retention,
+  corrupt JSON handling, dashboard/recreation, empty state and signed-out
+  Home redirect. These tests do not authenticate with a live Firebase server.
+
+Build: debug APK, instrumentation APK and unsigned release APK succeeded.
+Final Gradle run: BUILD SUCCESSFUL in 5s.
+
+Android lint: 0 errors, 2 warnings.
+  AndroidGradlePluginVersion: newer Gradle distribution available.
+  GradleDependency: newer Firebase BoM available.
+  Existing pinned production tool/dependency versions were preserved.
+
+Visual checks:
+  Four normal portrait screenshots inspected.
+  Dashboard and empty-state tests repeated at 320 dp width, font scale 2.0:
+  2 tests passed; reader/history screens inspected for wrapping and scrolling.
+  Same two tests repeated in landscape: 2 passed; screenshots inspected.
+  Repeats are not counted as additional unique tests in the 34-test total.
+
+Release manifest:
+  DashboardPreviewActivity is absent from release.
+  HomeActivity is not exported.
+  Backup remains disabled and cleartext traffic remains disabled.
+
+git diff --check: passed.
+
+REPRODUCE
+---------
+Requirements: JDK 17+, Android SDK 37 / Build Tools 36.0.0, SDK configured
+through Android Studio or ANDROID_HOME. See README for Firebase setup.
+
+./gradlew testDebugUnitTest assembleDebug assembleDebugAndroidTest assembleRelease lintDebug
+
+On an isolated signed-out emulator (API 36 was used):
+./gradlew connectedDebugAndroidTest
+
+For screenshots, Gradle's managed test cleanup can uninstall the app and
+remove its external files. Install and run the suite directly, then pull:
+
+adb -s <emulator-serial> install -r app/build/outputs/apk/debug/app-debug.apk
+adb -s <emulator-serial> install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+adb -s <emulator-serial> shell am instrument -w com.carmind.app.test/androidx.test.runner.AndroidJUnitRunner
+adb -s <emulator-serial> pull /sdcard/Android/data/com.carmind.app/files/sprint2-screenshots/
+
+Use a dedicated test emulator, not a user's signed-in phone. UI assertions
+currently use English labels, so reproduce with an English test locale.
+
+Standard generated reports:
+app/build/test-results/testDebugUnitTest/
+app/build/reports/tests/testDebugUnitTest/index.html
+app/build/reports/androidTests/connected/debug/index.html
+app/build/reports/lint-results-debug.html
+
+EVIDENCE BOUNDARIES
+-------------------
+Dashboard screenshots use a non-exported debug-only test activity, the actual
+dashboard layout/renderer, and explicitly marked simulated data. Its actions
+are disabled. Release has no sample-data screen or authentication bypass.
+
+Not executed: physical Bluetooth pairing/permission flow, SPP compatibility
+with the photographed reader, actual vehicle responses, real disconnect and
+cancellation behavior, live Firebase sign-in, or teammate registration.
+See physical acceptance cases P01-P08 in docs/SPRINT2.md and the Word report.
+
+The local google-services.json was unavailable. The APKs therefore build
+without Firebase configuration, and ordinary sign-in is unavailable until
+the team supplies that file and rebuilds. The release APK is unsigned.
+
+The prior paused, untracked Sprint 1 RegistrationValidationTest draft was
+moved to ignored tmp/paused-sprint1/ because no registration implementation
+exists in this checkout. It is not included in these counts or source ZIP.

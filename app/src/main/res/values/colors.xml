@@ -1,0 +1,8 @@
+<resources>
+    <color name="ink">#173A53</color>
+    <color name="teal">#116D67</color>
+    <color name="muted">#526779</color>
+    <color name="canvas">#F5F8FA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="outline">#D9E2E8</color>
+</resources>

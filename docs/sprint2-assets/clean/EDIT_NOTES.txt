@@ -1,0 +1,18 @@
+Background-isolated presentation images
+
+Created with the built-in image generation/editing tool from the three
+user-supplied hardware photos. The hand and surrounding background were
+removed; the reader is enlarged for presentation. These edited images
+illustrate the reader and must not be used to identify exact electronic parts.
+Original photographs remain unchanged in the parent directory.
+
+Prompt set
+
+hardware-in-hand.png:
+Use case: background-extraction. Edit target: the supplied photograph of the small green OBD reader PCB resting on a hand. Remove the entire human hand, skin, clothing, room and surrounding background. Keep ONLY the actual reader assembly, including its existing small black base and upright daughterboard. Preserve the exact visible component arrangement, board proportions, perspective and photographic details; do not add, redesign or label components. Center the complete isolated device prominently, tightly framed with 5–8% transparent margin. Transparent background with real alpha, no shadow, no text, no invented surroundings. This is a faithful cutout for an academic presentation, not a redesigned product.
+
+hardware-closeup.png:
+Use case: background-extraction. Edit target: the supplied photograph of the small green OBD reader PCB resting on a hand. Remove the entire human hand, skin, clothing, room and surrounding background. Keep ONLY the actual reader assembly, including its existing small black base and upright daughterboard. Preserve the exact visible component arrangement, board proportions, perspective and photographic details; do not add, redesign or label components. Center the complete isolated device prominently, tightly framed with 5–8% transparent margin. Transparent background with real alpha, no shadow, no text, no invented surroundings. This is a faithful cutout for an academic presentation, not a redesigned product.
+
+hardware-in-case.png:
+Use case: background-extraction. Edit target: the supplied photograph of the small green OBD reader PCB inside its opened black plastic casing. Remove the entire human hand, skin, clothing, room and surrounding background. Keep ONLY the actual reader assembly including its open black casing and green upright board. Preserve the exact visible component arrangement, board proportions, perspective and photographic details; do not add, redesign or label components. Center the complete isolated device prominently, tightly framed with 5–8% transparent margin. Transparent background with real alpha, no shadow, no text, no invented surroundings. This is a faithful cutout for an academic presentation, not a redesigned product.

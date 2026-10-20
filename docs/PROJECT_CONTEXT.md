@@ -4,7 +4,11 @@ Baseline date: 2026-10-04. This document preserves the user-provided project bas
 
 ## Current repository state
 
-At baseline intake, the repository contained only a root `README.md` naming CarMind. No application, firmware, backend, database schema, tests, or build configuration existed. Reinspect the repository as implementation progresses; actual code, tests, and schema are authoritative for implemented behavior.
+At baseline intake, the repository contained only a root `README.md` naming CarMind. No application, firmware, backend, database schema, tests, or build configuration existed.
+
+Implementation update, 2026-10-20: the CCSW 431 app now uses native Android Java/XML and Firebase Authentication. Sprint 2 adds paired Bluetooth reader selection, a bounded read-only snapshot request, a dashboard, and the latest 20 local snapshots separated by Firebase UID. The existing email/password login is preserved; registration is not present in this checkout. There is no implemented backend, Flutter client or custom-device firmware.
+
+For this course sprint, the user supplied photographs of an existing OBD adapter and confirmed Bluetooth. The code uses Bluetooth Classic SPP with ELM-compatible commands. The exact photographed model, Classic versus BLE transport, and supported vehicle readings have not been verified physically. The long-term custom cellular device below remains a proposal, not a requirement to build hardware in Sprint 2. See [SPRINT2.md](SPRINT2.md) for the implemented boundary and verification.
 
 ## Purpose and problem
 
