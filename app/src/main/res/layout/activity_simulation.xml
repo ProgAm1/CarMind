@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/demo_root" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <TextView style="@style/DashboardText" android:text="@string/demo_banner" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/surface" android:background="@color/teal" android:gravity="center" android:padding="12dp" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
+        <LinearLayout android:id="@+id/demo_content" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+            <TextView style="@style/DashboardHeading" android:text="@string/demo_title" android:textSize="30sp" />
+            <TextView style="@style/DashboardText" android:id="@+id/demo_account" android:textColor="@color/teal" android:textSize="14sp" android:layout_marginTop="4dp" />
+            <TextView style="@style/DashboardText" android:text="@string/demo_subtitle" android:textColor="@color/muted" android:textSize="14sp" android:layout_marginTop="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/surface_card" android:layout_marginTop="20dp">
+                <TextView style="@style/DashboardText" android:text="@string/demo_flow" android:textStyle="bold" android:textColor="@color/teal" />
+                <LinearLayout android:id="@+id/demo_steps" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                    <TextView style="@style/DashboardText" android:id="@+id/demo_step_power" android:layout_marginTop="16dp" />
+                    <TextView style="@style/DashboardText" android:id="@+id/demo_step_bluetooth" android:layout_marginTop="12dp" />
+                    <TextView style="@style/DashboardText" android:id="@+id/demo_step_read" android:layout_marginTop="12dp" />
+                </LinearLayout>
+                <TextView style="@style/DashboardText" android:id="@+id/demo_status" android:textSize="14sp" android:accessibilityLiveRegion="polite" android:layout_marginTop="16dp" />
+                <ProgressBar android:id="@+id/demo_connection_progress" android:layout_width="32dp" android:layout_height="32dp" android:layout_gravity="center_horizontal" android:layout_marginTop="12dp" android:visibility="gone" />
+                <Button style="@style/DashboardButton" android:id="@+id/demo_connect" android:layout_marginTop="16dp" android:text="@string/demo_plug" />
+                <Button style="@style/DemoTextButton" android:id="@+id/demo_explain" android:text="@string/demo_flow_title" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/surface_card" android:layout_marginTop="20dp">
+                <TextView style="@style/DashboardHeading" android:text="@string/trip_title" />
+                <TextView style="@style/DashboardText" android:text="@string/trip_simulation_note" android:textSize="13sp" android:textColor="@color/muted" android:layout_marginTop="8dp" />
+                <Button style="@style/DemoTextButton" android:id="@+id/trip_history_button" android:text="@string/trip_history_title" />
+                <TextView style="@style/DashboardHeading" android:id="@+id/trip_number" android:textSize="20sp" android:textColor="@color/teal" android:layout_marginTop="8dp" />
+                <TextView style="@style/DashboardText" android:id="@+id/trip_live" android:textSize="14sp" android:layout_marginTop="12dp" />
+                <Button style="@style/DashboardButton" android:id="@+id/trip_start" android:text="@string/trip_start" android:layout_marginTop="16dp" />
+                <Button style="@style/DemoTextButton" android:id="@+id/trip_end" android:text="@string/trip_end" />
+                <TextView style="@style/DashboardText" android:id="@+id/trip_notice" android:textSize="14sp" android:textColor="@color/teal" android:accessibilityLiveRegion="polite" />
+            </LinearLayout>
+            <TextView style="@style/DashboardText" android:id="@+id/demo_updated" android:textSize="13sp" android:textColor="@color/muted" android:layout_marginTop="20dp" android:layout_marginBottom="12dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/surface_card" android:gravity="center_horizontal">
+                <TextView style="@style/DashboardText" android:text="@string/demo_speed_unit" android:gravity="center" />
+                <TextView style="@style/DashboardHeading" android:id="@+id/demo_speed" android:text="@string/demo_no_value" android:textSize="48sp" android:gravity="center" android:textColor="@color/teal" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:baselineAligned="false" android:layout_marginTop="12dp">
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/surface_card" android:layout_marginEnd="6dp">
+                    <TextView style="@style/DashboardText" android:text="@string/demo_rpm_unit" android:textSize="14sp" />
+                    <TextView style="@style/DashboardHeading" android:id="@+id/demo_rpm" android:text="@string/demo_no_value" android:textSize="28sp" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/surface_card" android:layout_marginStart="6dp">
+                    <TextView style="@style/DashboardText" android:text="@string/demo_coolant_unit" android:textSize="14sp" />
+                    <TextView style="@style/DashboardHeading" android:id="@+id/demo_coolant" android:text="@string/demo_no_value" android:textSize="28sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <TextView style="@style/DashboardHeading" android:text="@string/demo_scenario_title" android:textSize="20sp" android:layout_marginTop="24dp" />
+            <RadioGroup android:id="@+id/demo_modes" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="8dp">
+                <RadioButton android:id="@+id/demo_idle" style="@style/DemoRadio" android:text="@string/demo_idle" />
+                <RadioButton android:id="@+id/demo_city" style="@style/DemoRadio" android:text="@string/demo_city" />
+                <RadioButton android:id="@+id/demo_highway" style="@style/DemoRadio" android:text="@string/demo_highway" />
+            </RadioGroup>
+            <TextView style="@style/DashboardText" android:id="@+id/demo_scenario" android:textSize="14sp" android:textColor="@color/muted" android:layout_marginBottom="16dp" />
+            <Button style="@style/DashboardButton" android:id="@+id/demo_pause" android:text="@string/demo_pause" />
+            <Button style="@style/DemoTextButton" android:id="@+id/demo_disconnect" android:text="@string/demo_disconnect" />
+            <Button style="@style/DemoTextButton" android:id="@+id/demo_save" android:text="@string/demo_save" />
+            <TextView style="@style/DashboardText" android:id="@+id/demo_saved" android:textSize="14sp" android:textColor="@color/teal" android:accessibilityLiveRegion="polite" />
+            <TextView style="@style/DashboardHeading" android:text="@string/demo_history_title" android:layout_marginTop="24dp" />
+            <TextView style="@style/DashboardText" android:text="@string/demo_history_help" android:textSize="14sp" android:textColor="@color/muted" android:layout_marginTop="8dp" />
+            <TextView style="@style/DashboardText" android:id="@+id/demo_history_count" android:textSize="14sp" android:layout_marginTop="12dp" />
+            <LinearLayout android:id="@+id/demo_history" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="12dp" />
+            <Button style="@style/DemoTextButton" android:id="@+id/demo_restart" android:text="@string/demo_restart" android:layout_marginTop="16dp" />
+            <Button style="@style/DemoTextButton" android:id="@+id/demo_back" android:text="@string/demo_back" />
+            <Button style="@style/DemoTextButton" android:id="@+id/demo_sign_out" android:text="@string/sign_out" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -14,11 +14,7 @@ final class DashboardRenderer {
     static void render(View root, List<VehicleReading> readings) {
         Context context = root.getContext();
         VehicleReading latest = readings.isEmpty() ? null : readings.get(0);
-        text(root, R.id.rpm_value, number(context, latest == null ? null : latest.rpm));
-        text(root, R.id.speed_value, number(context, latest == null ? null : latest.speed));
-        text(root, R.id.coolant_value, number(context, latest == null ? null : latest.coolant));
-        text(root, R.id.reading_time, latest == null ? context.getString(R.string.no_readings)
-                : source(context, latest));
+        renderLatest(root, latest);
         LinearLayout history = root.findViewById(R.id.history_list);
         history.removeAllViews();
         if (readings.isEmpty()) {
@@ -39,6 +35,15 @@ final class DashboardRenderer {
                 history.addView(row, params);
             }
         }
+    }
+
+    static void renderLatest(View root, VehicleReading latest) {
+        Context context = root.getContext();
+        text(root, R.id.rpm_value, number(context, latest == null ? null : latest.rpm));
+        text(root, R.id.speed_value, number(context, latest == null ? null : latest.speed));
+        text(root, R.id.coolant_value, number(context, latest == null ? null : latest.coolant));
+        text(root, R.id.reading_time, latest == null ? context.getString(R.string.no_readings)
+                : source(context, latest));
     }
 
     private static String source(Context context, VehicleReading reading) {

@@ -74,6 +74,21 @@ public class Sprint2DeviceTest {
         }
     }
 
+    @Test public void numberedTripShowsMetricsWithoutLocation() throws Exception {
+        Intent intent = new Intent(context, DashboardPreviewActivity.class).putExtra("trip", true);
+        try (ActivityScenario<DashboardPreviewActivity> screen = ActivityScenario.launch(intent)) {
+            screen.onActivity(a -> {
+                String summary = ((TextView) a.findViewById(R.id.real_trip_summary)).getText().toString();
+                assertTrue(summary.contains("Trip 3")); assertTrue(summary.contains("RPM"));
+                assertTrue(summary.contains("45.0 / 50.0"));
+                assertFalse(summary.contains("Jeddah")); assertFalse(summary.contains("destination"));
+                android.view.View card = (android.view.View) a.findViewById(R.id.real_trip_summary).getParent();
+                ((ScrollView) a.findViewById(R.id.root)).scrollTo(0, card.getTop());
+            });
+            capture("05-real-trip-layout.png");
+        }
+    }
+
     @Test public void emptyStateDoesNotShowSampleValues() throws Exception {
         Intent intent = new Intent(context, DashboardPreviewActivity.class).putExtra("empty", true);
         try (ActivityScenario<DashboardPreviewActivity> screen = ActivityScenario.launch(intent)) {
@@ -112,5 +127,10 @@ public class Sprint2DeviceTest {
             assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, output));
         }
         bitmap.recycle();
+        try (android.os.ParcelFileDescriptor result = instrumentation.getUiAutomation().executeShellCommand(
+                "cp " + new File(directory, name).getAbsolutePath() + " /data/local/tmp/trips-" + name);
+                java.io.FileInputStream input = new java.io.FileInputStream(result.getFileDescriptor())) {
+            while (input.read() != -1) { /* Preserve evidence before test APK teardown. */ }
+        }
     }
 }

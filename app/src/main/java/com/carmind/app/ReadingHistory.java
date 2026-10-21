@@ -14,9 +14,17 @@ final class ReadingHistory {
     private final String owner;
 
     ReadingHistory(Context context, String owner) {
+        this(context, owner, "carmind_readings_v1");
+    }
+
+    static ReadingHistory simulation(Context context, String owner) {
+        return new ReadingHistory(context, owner, "carmind_demo_readings_v1");
+    }
+
+    private ReadingHistory(Context context, String owner, String store) {
         if (owner == null || owner.isEmpty()) throw new IllegalArgumentException("User required");
         this.owner = owner;
-        preferences = context.getSharedPreferences("carmind_readings_v1", Context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences(store, Context.MODE_PRIVATE);
     }
 
     List<VehicleReading> load() {

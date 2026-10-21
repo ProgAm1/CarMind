@@ -5,7 +5,7 @@ cd "$(dirname "$0")/.."
 export JAVA_HOME="${JAVA_HOME:-/Applications/Android Studio.app/Contents/jbr/Contents/Home}"
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
 adb="$ANDROID_HOME/platform-tools/adb"
-device="emulator-5554"
+device=""
 
 if [[ ! -x "$JAVA_HOME/bin/java" || ! -x "$adb" ]]; then
     echo "Set JAVA_HOME and ANDROID_HOME to your Java and Android SDK folders."
@@ -16,10 +16,17 @@ if [[ ! -f app/google-services.json ]]; then
     exit 1
 fi
 
+device="$("$adb" devices | awk '$1 ~ /^emulator-/ && $2 == "device" {print $1; exit}')"
+device="${device:-emulator-5554}"
 if ! "$adb" devices | awk '{print $1}' | grep -qx "$device"; then
     emulator_log="$(mktemp -t carmind-emulator)"
-    echo "Starting CarMind_API_36. Emulator log: $emulator_log"
-    nohup "$ANDROID_HOME/emulator/emulator" -avd CarMind_API_36 -port 5554 \
+    selected_avd="${CARMIND_AVD:-$("$ANDROID_HOME/emulator/emulator" -list-avds | head -n 1)}"
+    if [[ -z "$selected_avd" ]]; then
+        echo "Create an Android Virtual Device in Android Studio first."
+        exit 1
+    fi
+    echo "Starting $selected_avd. Emulator log: $emulator_log"
+    nohup "$ANDROID_HOME/emulator/emulator" -avd "$selected_avd" -port 5554 \
         >"$emulator_log" 2>&1 </dev/null &
 fi
 
@@ -40,4 +47,4 @@ fi
 ANDROID_SERIAL="$device" ./gradlew installDebug --console=plain --quiet
 "$adb" -s "$device" shell am force-stop com.carmind.app
 "$adb" -s "$device" shell am start -W -n com.carmind.app/.LoginActivity >/dev/null
-echo "CarMind is running."
+echo "CarMind is running. Sign in with Firebase, then choose Classroom demo."

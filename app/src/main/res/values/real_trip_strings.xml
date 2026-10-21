@@ -1,0 +1,24 @@
+<resources>
+    <string name="real_trip_title">Record a trip</string>
+    <string name="real_trip_help">Select your paired OBD reader, then start. Records real supported readings until you stop or the connection is lost. Recording continues with the screen locked. No location is collected.</string>
+    <string name="real_trip_ready">Choose a Bluetooth Classic ELM-compatible reader to begin.</string>
+    <string name="real_trip_start">Start trip</string>
+    <string name="real_trip_stop">End trip and save</string>
+    <string name="real_trip_history">My trips</string>
+    <string name="real_trip_history_count">My trips (%1$d)</string>
+    <string name="real_trip_history_note">Real vehicle readings · saved on this phone for this account. Latest 100 trips. Times use Saudi time (UTC+3). Averages use available samples; — means unavailable. Distance is estimated only between consecutive speed samples up to 15 seconds apart.</string>
+    <string name="real_trip_empty">No recorded trips yet.</string>
+    <string name="real_trip_connecting">Connecting to your reader and requesting supported data…</string>
+    <string name="real_trip_recording">Recording from the OBD reader</string>
+    <string name="real_trip_finished">Recording ended. Any received readings are saved.</string>
+    <string name="real_trip_disconnected">Reader stopped responding. Any received readings are saved through the last sample. Reconnect and start a new trip.</string>
+    <string name="real_trip_signed_out">Recording ended on sign-out.</string>
+    <string name="real_trip_interrupted">Recording interrupted. Saved through the last received sample.</string>
+    <string name="real_trip_limit">Recording stopped at the 24-hour limit.</string>
+    <string name="real_trip_start_failed">Could not start recording. Check Bluetooth permission, pairing and reader power, then try again.</string>
+    <string name="real_trip_ble">This reader uses BLE. This version supports Bluetooth Classic SPP ELM readers; BLE needs a compatible reader integration.</string>
+    <string name="real_trip_channel">Vehicle trip recording</string>
+    <string name="real_trip_notification">CarMind · Trip recording active</string>
+    <string name="real_trip_notification_detail">Reading your OBD adapter. Tap to view, or end recording below.</string>
+    <string name="real_trip_record">Trip %1$d\nStart: %2$s\nEnd / latest: %3$s\nDuration: %4$s\nAverage / max speed: %5$s / %6$s km/h\nAverage / max RPM: %7$s / %8$s\nAverage / max coolant: %9$s / %10$s °C\nEstimated distance: %11$s km\nSpeed coverage: %12$s\nSamples: %13$d\n%14$s</string>
+</resources>

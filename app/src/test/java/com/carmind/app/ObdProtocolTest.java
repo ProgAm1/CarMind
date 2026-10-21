@@ -83,6 +83,23 @@ public class ObdProtocolTest {
     @Test(expected = IOException.class) public void noVehicleResponseFails() throws Exception {
         ObdProtocol.read(command -> command.equals("0100") ? "UNABLE TO CONNECT" : "OK");
     }
+    @Test public void continuousSamplesReuseSetupAndKeepChangingRealReplies() throws Exception {
+        List<String> commands = new ArrayList<>();
+        int[] speed = {0};
+        ObdProtocol.Exchange exchange = command -> {
+            commands.add(command);
+            if (command.equals("0100")) return "410000080000";
+            if (command.equals("010D")) return speed[0]++ == 0 ? "410D00" : "410D32";
+            return "OK";
+        };
+        byte[] supported = ObdProtocol.initialize(exchange);
+        assertEquals(0.0, ObdProtocol.sample(exchange, supported)[1], 0);
+        assertEquals(50.0, ObdProtocol.sample(exchange, supported)[1], 0);
+        assertEquals(1, java.util.Collections.frequency(commands, "ATZ"));
+        assertEquals(1, java.util.Collections.frequency(commands, "0100"));
+        assertEquals(2, java.util.Collections.frequency(commands, "010D"));
+        assertFalse(commands.contains("010C"));
+    }
     @Test public void exchangeWritesCarriageReturnAndStopsAtPrompt() throws Exception {
         ByteArrayInputStream input = new ByteArrayInputStream("410D32\r>unused".getBytes(StandardCharsets.US_ASCII));
         ByteArrayOutputStream output = new ByteArrayOutputStream();

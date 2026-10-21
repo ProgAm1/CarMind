@@ -1,0 +1,16 @@
+<resources>
+    <string name="trip_title">Your simulated trips</string>
+    <string name="trip_number">Trip %1$d</string>
+    <string name="trip_simulation_note">Classroom data only. Trip time runs at ×30: one real second represents 30 trip seconds. Dates and times use Saudi time (UTC+3).</string>
+    <string name="trip_history_title">My simulated trips</string>
+    <string name="trip_history_button">My simulated trips (%1$d)</string>
+    <string name="trip_history_scope">Account: %1$s\nSaved on this phone for this account only. Includes four generated examples, added once. All readings and distances here are simulated.</string>
+    <string name="trip_start">Start simulated trip</string>
+    <string name="trip_end">End trip and save</string>
+    <string name="trip_ready">Connect the simulated reader, then start a numbered trip. End the trip to save its time and readings.</string>
+    <string name="trip_live">Start: %1$s\nTrip clock: %2$s\nDuration: %3$s\nDistance: %4$.2f km\nAverage / max speed: %5$.1f / %6$.1f km/h</string>
+    <string name="trip_running">Trip started. Pause freezes both readings and the trip clock.</string>
+    <string name="trip_empty_cancelled">Empty trip cancelled. No record was added.</string>
+    <string name="trip_finished_notice">Trip ended and saved to your account on this phone.</string>
+    <string name="trip_record">SIMULATED · Trip %1$d\nStart: %2$s\nEnd: %3$s\nDuration: %4$s\nDistance: %5$.2f km\nAverage / max speed: %6$.1f / %7$.1f km/h</string>
+</resources>

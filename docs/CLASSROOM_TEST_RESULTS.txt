@@ -1,0 +1,81 @@
+CarMind classroom demonstration — verification, 21 October 2026
+
+Final implementation: existing native Android Java/XML app and real team
+Firebase Authentication. Only the vehicle connection walkthrough and vehicle
+readings are simulated. No local authentication replacement was introduced.
+
+PASS: 35 JVM tests, zero failures (including 7 new simulation-model tests).
+PASS: 12 Android device tests, zero failures/errors/skips on API 36 ARM64.
+PASS: debug and release APK builds.
+PASS: debug/release Android lint; zero errors. Two dependency-update notices
+      remain (Gradle and Firebase BOM).
+PASS: git diff --check and bash -n scripts/dev.sh.
+PASS: release manifest has non-exported SimulationActivity and excludes both
+      debug component-preview activities.
+
+Cloud authentication acceptance (explicit opt-in):
+- Used the actual configured carmind-senior Firebase project.
+- Created one uniquely named temporary test identity for the final run.
+- Blank/malformed email and missing password fail local validation.
+- Wrong password is rejected by Firebase and does not establish a session.
+- Correct credentials through LoginActivity open the real HomeActivity.
+- Duplicate submit is disabled while the sign-in request is in progress.
+- A fresh login activity reuses the current Firebase session and opens Home.
+- The real authenticated Home opens the classroom simulation.
+- Sign out from simulation clears Firebase session and returns to Login.
+- The test reauthenticated and deleted only its own temporary identity.
+- No passwords, refresh tokens or configuration contents are in this report.
+
+Simulation acceptance:
+- Power -> Bluetooth reader choice -> request negotiation -> connected state.
+- Generated values change gradually and stay in the model's defined bounds.
+- Idle reaches zero road speed while retaining engine RPM.
+- Pause and simulated connection loss freeze values; reconnect resumes.
+- Rotation retains values and pauses; leaving the screen stops updates.
+- Real SimulationActivity rejects unauthenticated access.
+- Demo storage remains separate from real readings and other accounts.
+- Persistent simulation banner, acquisition timestamps, 20-entry history.
+- Compact layout with 2x font scale and landscape checked in a debug test
+  context; screenshots visually inspected. The app retains its light theme
+  when the test context requests night mode.
+
+An early test attempt failed to initialize accessibility before the first
+reader-selection dialog. The test now initializes it before launching the
+screen. A test-only large-font override was moved to context attachment,
+and cloud session navigation now waits for the new resumed Home activity.
+The complete suite subsequently passed. A final focused layout test also
+passed after waiting for the rotation compositor before capturing evidence.
+
+Limits:
+- RegistrationActivity is not present in this checkout; no new registration
+  screen or local account system was added.
+- Cloud tests cover fresh Activity session reuse, not process-kill persistence,
+  throttling, disabled accounts or a real network outage.
+- No physical vehicle/reader compatibility or live OBD streaming is claimed.
+- Classroom timing and telemetry are generated for explanation only.
+- Release APK is unsigned; the installable classroom APK uses debug signing.
+
+
+Account-specific Jeddah trip update — 21 October 2026
+
+PASS: all 45 JVM tests, zero failures/errors/skips (10 trip model tests).
+PASS: 6 SimulationDeviceTest UI tests and 4 DemoTripStoreTest storage tests
+      on the separate CarMind_Trips_Test API 36 ARM64 emulator.
+PASS: final focused journey UI test after active-trip button refinement.
+PASS: final debug/release builds and Android lint.
+
+Trip acceptance:
+- Different UIDs receive different saved sample journeys and telemetry profiles.
+- History and drafts persist independently for two accounts; examples seed once.
+- Start, tick, pause, recreation, resume, early finish and history display pass.
+- Departure/end dates, Saudi time, duration, distance, average and maximum
+  speed are consistent; arrival is clamped to the simulated route distance.
+- Empty/invalid records are rejected; completion is idempotent; latest 20 kept.
+- Corrupt history does not silently generate replacement journeys.
+- Trip and history screenshots visually checked, including active controls.
+
+This update did not change Firebase login or rerun cloud authentication tests.
+The cloud acceptance results above belong to the earlier classroom run.
+Locations and distances are illustrative Jeddah neighborhood routes, not GPS.
+Trip time runs at 30 simulated seconds per real tick and freezes while paused.
+Storage is local and partitioned by UID, with no cross-device cloud sync.

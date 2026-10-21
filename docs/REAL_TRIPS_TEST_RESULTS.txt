@@ -1,0 +1,47 @@
+CarMind 0.3 — numbered real OBD trips — 21 October 2026
+
+PASS: 52 JVM tests (including 6 real-trip aggregation tests and repeated PID
+      polling with one-time adapter initialization).
+PASS: 22 non-cloud Android device tests in the full isolated API 36 run:
+      4 demo-store, 6 demo UI, 6 existing dashboard/history, 2 recorder-service,
+      and 4 real-store/migration tests.
+PASS: 1 additional numbered-trip layout test, with inspected screenshot.
+PASS: final rerun of all 4 real-store tests after legacy-number migration fix.
+      Total distinct passing device tests: 23. No application test failures.
+PASS: final debug/release builds, unit tests, debug/release lint, git diff --check.
+PASS: installable release APK signed with the existing local development key;
+      APK v2/v3 signatures verified. Version 0.3 (code 3), min Android API 24.
+PASS: release manifest includes non-exported connectedDevice service and excludes
+      all debug preview/test components. No location permission is present.
+
+The full-run raw XML classifies the cloud test's intentional JUnit assumption
+("explicit opt-in required") as a failure, although Gradle reports success and
+Android's runner reports zero failed tests. CloudLoginDeviceTest was NOT opted
+in or executed against Firebase in this run; it is excluded from pass counts.
+
+Verified behavior:
+- Real-record service survives Activity backgrounding, aggregates received
+  samples, stops and saves on manual end, and saves after injected disconnect.
+- Service tests use a non-exported debug-only transport fixture. They exercise
+  production lifecycle/storage logic, NOT a physical Bluetooth radio or car.
+- Stable per-UID numbering, local account isolation, no seeded real trips,
+  latest-100 retention, idempotent completion and interrupted-draft recovery.
+- Start/end dates and actual elapsed duration; average/max speed, RPM, coolant.
+- Missing values remain unavailable; zero/negative supported readings retained.
+- Distance only integrates valid consecutive speed samples within 15 seconds.
+- No samples accepted after stop and no distance invented across missing data.
+- Demo trip labels no longer contain neighborhoods, routes or destinations;
+  prior dates/metrics survive migration and older numbers stay stable.
+- Screenshot QA for numbered real-trip summary and numbered demo history.
+
+Limits:
+- The user's physical reader/vehicle has not been available for testing.
+- Supports Bluetooth Classic SPP with ELM-compatible read-only commands;
+  BLE-only and Wi-Fi readers are not integrated.
+- Screen-lock continuity is implemented via foreground service/wake lock;
+  Activity background continuity is tested. OEM battery policies and actual
+  locked-phone Bluetooth performance still require a physical field test.
+- Authentication remains the team's existing Firebase implementation.
+- Trips are stored locally per Firebase UID; no cloud synchronization or GPS.
+- APK is for team testing with the local development signing key, not a store
+  production signing identity. No debug test transport is in the delivered APK.

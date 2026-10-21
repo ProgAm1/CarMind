@@ -13,6 +13,18 @@ Version 0.2 requests supported engine RPM, vehicle speed and coolant temperature
 
 Sprint 2 submission documents: [presentation](docs/CarMind_Sprint2_Deck.pptx), [progress and test report](docs/CarMind_Sprint2_Report.docx), and [Arabic presenter notes](docs/SPRINT2_PRESENTER_NOTES_AR.txt). The revised 14-slide deck includes isolated reader photos and editable diagrams explaining power and data flow.
 
+## Version 0.3 — real numbered trips
+
+The dashboard now has **Start trip**, **End trip and save**, and **My trips**. After selecting a paired Bluetooth Classic SPP ELM-compatible adapter, the app opens one connection, negotiates supported PIDs once, and polls speed, RPM and coolant repeatedly. A connected-device foreground service owns the connection while the screen is locked or the activity is backgrounded. No GPS, routes or vehicle-control commands are used.
+
+Trips start on the first valid reading and keep stable per-account numbers, Saudi timestamps, elapsed duration, available-sample average/max values, sample count and observed-speed distance estimates. End manually or let a connection failure close the trip at the last sample. An interrupted process is recovered from its persisted draft; it never fabricates readings while absent. The latest 100 real trips are stored locally per Firebase UID, separately from the classroom examples. No cross-device cloud sync is implemented.
+
+Physical adapter/vehicle compatibility remains unverified. BLE-only adapters are not supported. See [Android installation and vehicle steps (Arabic)](docs/REAL_TRIPS_AR.md) and [verification](docs/REAL_TRIPS_TEST_RESULTS.txt).
+
+## Classroom demonstration
+
+After normal Firebase sign-in, choose **Classroom demo · simulated vehicle**. Walk through OBD power, Bluetooth pairing and supported-data requests, then show changing speed, RPM and coolant readings. Pause, switch driving scenarios, simulate a disconnect and reconnect, and review separate simulated history. No car or Bluetooth connection is needed for the simulation. Each account also has four saved sample trips and can record new numbered simulated trips with start/end times, duration, distance and speeds. There are no locations or routes. Trip data is stored per Firebase UID on this device; it is not synchronized to Firebase. See [the classroom guide](docs/CLASSROOM_DEMO.md).
+
 ## Open and build
 
 Open this repository folder in Android Studio. Use Android SDK 37, Build Tools 36.0.0, and JDK 17 or newer. The app supports Android 7.0 (API 24) or later. The included Gradle wrapper pins Gradle 9.6.0 and checks its distribution checksum.

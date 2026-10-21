@@ -38,6 +38,14 @@ public class DashboardPreviewActivity extends Activity {
             ((TextView) findViewById(R.id.connection_status)).setText("UI preview. No vehicle connected.");
         }
         DashboardRenderer.render(root, readings);
+        if (getIntent().getBooleanExtra("trip", false)) {
+            TripRecord trip = new TripRecord(3, 1792566000000L);
+            trip.add(new VehicleReading(trip.startedAt, "TEST", 1500.0, 40.0, 85.0), 0);
+            trip.add(new VehicleReading(trip.startedAt + 10000, "TEST", 1800.0, 50.0, 88.0), 10000);
+            trip.finish("finished", 12000);
+            ((TextView) findViewById(R.id.real_trip_summary)).setText(TripText.summary(this, trip));
+            ((TextView) findViewById(R.id.real_trip_status)).setText("UI preview only • recorded trip layout");
+        }
         for (int id : new int[]{R.id.choose_reader, R.id.bluetooth_settings, R.id.read_vehicle, R.id.sign_out}) {
             findViewById(id).setEnabled(false);
         }

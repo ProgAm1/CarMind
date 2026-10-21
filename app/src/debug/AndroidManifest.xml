@@ -2,5 +2,7 @@
     <application>
         <!-- Component test host only. No launcher entry, auth bypass or release activity. -->
         <activity android:name=".DashboardPreviewActivity" android:exported="false" />
+        <activity android:name=".SimulationPreviewActivity" android:exported="false" />
+        <service android:name=".TripTestService" android:exported="false" android:foregroundServiceType="connectedDevice" />
     </application>
 </manifest>

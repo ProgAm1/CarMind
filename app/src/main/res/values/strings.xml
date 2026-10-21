@@ -30,7 +30,7 @@
     <string name="cancel_reading">Cancel reading</string>
     <string name="last_reading">Last saved reading</string>
     <string name="no_readings">No readings yet. Connect your reader and request a reading.</string>
-    <string name="not_live">Saved snapshot, not live data. Unavailable values are not reported by the reader.</string>
+    <string name="not_live">Latest received sample — check its timestamp. Unavailable values are not reported by the reader.</string>
     <string name="rpm_label">Engine speed · RPM</string>
     <string name="speed_label">Vehicle speed · km/h</string>
     <string name="coolant_label">Coolant temperature · °C</string>

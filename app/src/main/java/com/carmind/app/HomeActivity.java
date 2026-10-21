@@ -8,6 +8,13 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Intent;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +42,25 @@ public class HomeActivity extends Activity {
     private AlertDialog picker;
     private boolean navigating, active, busy;
     private int generation;
+    private TripRecordingService recorder;
+    private TripStore tripStore;
+    private boolean bound, tripStarting;
+    private long lastDisplayedAt;
+    private VehicleReading displayedTripSample;
+    private final Handler ui = new Handler(Looper.getMainLooper());
+    private final Runnable refresh = new Runnable() {
+        @Override public void run() { if (active) { renderTrip(); ui.postDelayed(this, 1000); } }
+    };
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override public void onServiceConnected(ComponentName name, IBinder binder) {
+            recorder = ((TripRecordingService.LocalBinder) binder).service();
+            if (!recorder.isRunning()) {
+                try { tripStore.recover(); } catch (IllegalStateException failure) { status(R.string.storage_failed); }
+            }
+            renderTrip();
+        }
+        @Override public void onServiceDisconnected(ComponentName name) { recorder = null; renderTrip(); }
+    };
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final FirebaseAuth.AuthStateListener listener = value -> {
         if (value.getCurrentUser() == null
@@ -49,7 +75,15 @@ public class HomeActivity extends Activity {
         auth = ((CarMindApplication) getApplication()).getAuth();
         BluetoothManager manager = getSystemService(BluetoothManager.class);
         adapter = manager == null ? null : manager.getAdapter();
+        findViewById(R.id.real_trip_start).setOnClickListener(view -> startTrip());
+        findViewById(R.id.real_trip_stop).setOnClickListener(view -> {
+            if (recorder != null && owner.equals(recorder.owner())) recorder.stop("finished", R.string.real_trip_finished);
+            renderTrip();
+        });
+        findViewById(R.id.real_trip_history).setOnClickListener(view -> showTrips());
         findViewById(R.id.choose_reader).setOnClickListener(view -> chooseReader());
+        findViewById(R.id.classroom_demo).setOnClickListener(view ->
+                startActivity(new Intent(this, SimulationActivity.class)));
         findViewById(R.id.bluetooth_settings).setOnClickListener(view ->
                 startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS)));
         findViewById(R.id.read_vehicle).setOnClickListener(view -> readVehicle());
@@ -59,6 +93,7 @@ public class HomeActivity extends Activity {
         });
         findViewById(R.id.sign_out).setOnClickListener(view -> {
             cancelReading();
+            if (recorder != null && owner.equals(recorder.owner())) recorder.stop("signed_out", R.string.real_trip_signed_out);
             if (auth != null) auth.signOut();
             openLogin();
         });
@@ -73,8 +108,13 @@ public class HomeActivity extends Activity {
         active = true;
         owner = auth.getCurrentUser().getUid();
         history = new ReadingHistory(this, owner);
+        tripStore = new TripStore(this, owner);
+        bound = bindService(new Intent(this, TripRecordingService.class), serviceConnection, BIND_AUTO_CREATE);
+        ui.post(refresh);
         ((TextView) findViewById(R.id.account_email)).setText(auth.getCurrentUser().getEmail());
-        DashboardRenderer.render(findViewById(R.id.root), history.load());
+        List<VehicleReading> savedReadings = history.load();
+        lastDisplayedAt = savedReadings.isEmpty() ? 0 : savedReadings.get(0).recordedAt;
+        DashboardRenderer.render(findViewById(R.id.root), savedReadings);
         findViewById(R.id.root).setVisibility(View.VISIBLE);
         auth.addAuthStateListener(listener);
         setBusy(false);
@@ -104,7 +144,7 @@ public class HomeActivity extends Activity {
 
     @SuppressLint("MissingPermission")
     private void chooseReader() {
-        if (busy || !bluetoothReady()) return;
+        if (busy || recording() || !bluetoothReady()) return;
         try {
             List<BluetoothDevice> devices = new ArrayList<>(adapter.getBondedDevices());
             devices.sort(Comparator.comparing(this::deviceLabel));
@@ -131,7 +171,7 @@ public class HomeActivity extends Activity {
     }
 
     private void readVehicle() {
-        if (busy || selected == null || !bluetoothReady() || !active) return;
+        if (busy || recording() || selected == null || !bluetoothReady() || !active) return;
         if (auth.getCurrentUser() == null || !owner.equals(auth.getCurrentUser().getUid())) {
             openLogin();
             return;
@@ -154,6 +194,7 @@ public class HomeActivity extends Activity {
                     client = null;
                     setBusy(false);
                     status(saved ? R.string.read_saved : R.string.storage_failed);
+                    lastDisplayedAt = reading.recordedAt;
                     DashboardRenderer.render(findViewById(R.id.root), userHistory.load());
                 });
             } catch (IOException | SecurityException failure) {
@@ -176,12 +217,79 @@ public class HomeActivity extends Activity {
 
     private void setBusy(boolean value) {
         busy = value;
+        value = value || recording();
         findViewById(R.id.choose_reader).setEnabled(!value && adapter != null);
         findViewById(R.id.bluetooth_settings).setEnabled(!value && adapter != null);
         findViewById(R.id.read_vehicle).setEnabled(!value && selected != null);
-        ((Button) findViewById(R.id.read_vehicle)).setText(value ? R.string.reading_vehicle : R.string.read_vehicle);
-        findViewById(R.id.reading_progress).setVisibility(value ? View.VISIBLE : View.GONE);
-        findViewById(R.id.cancel_reading).setVisibility(value ? View.VISIBLE : View.GONE);
+        ((Button) findViewById(R.id.read_vehicle)).setText(busy ? R.string.reading_vehicle : R.string.read_vehicle);
+        findViewById(R.id.reading_progress).setVisibility(busy ? View.VISIBLE : View.GONE);
+        findViewById(R.id.cancel_reading).setVisibility(busy ? View.VISIBLE : View.GONE);
+    }
+
+    private boolean recording() { return tripStarting || (recorder != null && recorder.isRunning()); }
+
+    @SuppressLint("MissingPermission")
+    private void startTrip() {
+        if (!active || busy || recording() || selected == null || !bluetoothReady()) return;
+        if (auth == null || auth.getCurrentUser() == null || !owner.equals(auth.getCurrentUser().getUid())) { openLogin(); return; }
+        if (selected.getType() == BluetoothDevice.DEVICE_TYPE_LE) { status(R.string.real_trip_ble); return; }
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 21);
+            // A denied notification permission does not prevent connected-device foreground recording.
+        }
+        Intent start = new Intent(this, TripRecordingService.class).setAction(TripRecordingService.START)
+                .putExtra("owner", owner).putExtra("address", selected.getAddress()).putExtra("name", selectedName);
+        try {
+            tripStarting = true;
+            if (Build.VERSION.SDK_INT >= 26) startForegroundService(start); else startService(start);
+            ui.postDelayed(() -> { tripStarting = false; if (active) renderTrip(); }, 1000);
+            renderTrip();
+        } catch (IllegalStateException | SecurityException failure) {
+            tripStarting = false; status(R.string.real_trip_start_failed);
+        }
+    }
+    private void renderTrip() {
+        if (!active || tripStore == null) return;
+        boolean running = recording();
+        findViewById(R.id.real_trip_start).setEnabled(!busy && !running && selected != null && recorder != null);
+        findViewById(R.id.real_trip_stop).setEnabled(running);
+        findViewById(R.id.real_trip_start).setAlpha(!busy && !running && selected != null && recorder != null ? 1f : 0.45f);
+        findViewById(R.id.real_trip_stop).setAlpha(running ? 1f : 0.45f);
+        findViewById(R.id.classroom_demo).setEnabled(!running && !busy);
+        setBusy(busy);
+        if (recorder != null && owner.equals(recorder.owner())) {
+            ((TextView) findViewById(R.id.real_trip_status)).setText(recorder.message());
+            TripRecord trip = recorder.current();
+            ((TextView) findViewById(R.id.real_trip_summary)).setText(trip == null ? "" : TripText.summary(this, trip));
+            VehicleReading sample = recorder.latest();
+            if (sample != null && sample != displayedTripSample && sample.recordedAt >= lastDisplayedAt) {
+                DashboardRenderer.renderLatest(findViewById(R.id.root), sample);
+                displayedTripSample = sample; lastDisplayedAt = sample.recordedAt;
+            }
+        }
+        try { ((Button) findViewById(R.id.real_trip_history)).setText(getString(R.string.real_trip_history_count, tripStore.load().size())); }
+        catch (IllegalStateException failure) { status(R.string.storage_failed); }
+    }
+    private void showTrips() {
+        if (!active) return;
+        ScrollView scroll = new ScrollView(this);
+        LinearLayout rows = new LinearLayout(this); rows.setOrientation(LinearLayout.VERTICAL);
+        int padding = (int) (16 * getResources().getDisplayMetrics().density);
+        rows.setPadding(padding, padding, padding, padding); scroll.addView(rows);
+        TextView note = new TextView(this); note.setTextAppearance(R.style.DashboardText);
+        note.setText(R.string.real_trip_history_note); rows.addView(note);
+        try {
+            List<TripRecord> records = tripStore.load();
+            if (records.isEmpty()) { TextView empty = new TextView(this); empty.setText(R.string.real_trip_empty); rows.addView(empty); }
+            for (TripRecord record : records) {
+                TextView row = new TextView(this); row.setTextAppearance(R.style.DashboardText);
+                row.setBackgroundResource(R.drawable.surface_card); row.setText(TripText.summary(this, record));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2); params.topMargin = padding;
+                rows.addView(row, params);
+            }
+        } catch (IllegalStateException failure) { status(R.string.storage_failed); return; }
+        picker = new AlertDialog.Builder(this).setTitle(R.string.real_trip_history).setView(scroll)
+                .setPositiveButton(android.R.string.ok, null).show();
     }
 
     private void status(int message) {
@@ -198,6 +306,9 @@ public class HomeActivity extends Activity {
 
     @Override protected void onStop() {
         active = false;
+        ui.removeCallbacksAndMessages(null);
+        if (bound) { unbindService(serviceConnection); bound = false; }
+        recorder = null; tripStarting = false;
         boolean wasBusy = busy;
         cancelReading();
         if (wasBusy) status(R.string.read_cancelled);

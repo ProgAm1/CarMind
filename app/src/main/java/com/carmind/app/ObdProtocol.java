@@ -11,6 +11,10 @@ final class ObdProtocol {
     interface Exchange { String send(String command) throws IOException; }
 
     static Double[] read(Exchange connection) throws IOException {
+        return sample(connection, initialize(connection));
+    }
+
+    static byte[] initialize(Exchange connection) throws IOException {
         connection.send("ATZ");
         for (String command : new String[]{"ATE0", "ATL0", "ATS0", "ATH0", "ATSP0"}) {
             if (!connection.send(command).toUpperCase(Locale.ROOT).contains("OK")) {
@@ -19,6 +23,10 @@ final class ObdProtocol {
         }
         byte[] supported = payload(connection.send("0100"), 0, 4);
         if (supported == null) throw new IOException("No supported PID response");
+        return supported;
+    }
+
+    static Double[] sample(Exchange connection, byte[] supported) throws IOException {
         Double rpm = supports(supported, 12) ? decode(connection.send("010C"), 12) : null;
         Double speed = supports(supported, 13) ? decode(connection.send("010D"), 13) : null;
         Double coolant = supports(supported, 5) ? decode(connection.send("0105"), 5) : null;
